@@ -45,3 +45,5 @@ if ($metodo==='GET') {
 }
  
 require('./return.php');
+
+?>

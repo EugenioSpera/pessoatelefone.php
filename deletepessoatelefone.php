@@ -12,25 +12,19 @@ if ($metodo==='DELETE') {
  
     //para proteger o id de colocarem letras//
     $id = filter_var($id,FILTER_VALIDATE_INT);
+
         //código delete
         if ($id) {
-            $sql=$pdo->prepare("SELECT pessoa.idPessoa from pessoa 
-            inner join telefone on pessoa.idPessoa= telefone.idPessoa
-            where pessoa.idPessoa = :id");
-
-            $sql->bindValue(":id",$id);
+            $sql=$pdo->prepare("DELETE FROM telefone WHERE idPessoa = :id"); 
+            $sql->bindValue(":id", $id, PDO::PARAM_INT);
             $sql->execute();
+
+            $sql = $pdo->prepare("DELETE FROM pessoa WHERE idPessoa = :id");
+                $sql->bindValue(":id", $id, PDO::PARAM_INT);
+                $sql->execute();
    
             if ($sql->rowCount()>0) {
-       
-                $sql = $pdo->prepare("DELETE FROM pessoa WHERE idPessoa=:id");
-                $sql->bindValue(":id", $id);
-                $sql->execute();
-
-                $sql = $pdo->prepare("DELETE FROM telefone WHERE idPessoa=:id");
-                $sql->bindValue(":id", $id);
-                $sql->execute();
-               
+                            
                 $array['result']='Pessoa e telefone excluídos com sucesso!';
  
         }
